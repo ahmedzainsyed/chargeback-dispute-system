@@ -1,0 +1,90 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+.Python
+
+# =========================
+# Virtual Environments
+# =========================
+venv/
+env/
+.env/
+.venv/
+
+# =========================
+# Build / Packaging
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+
+# =========================
+# Testing
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# Jupyter Notebooks
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# ML Models (large files)
+# =========================
+models/*.pkl
+models/*.joblib
+models/*.h5
+models/*.pt
+models/*.bin
+models/*.onnx
+
+# =========================
+# Data (large datasets)
+# =========================
+data/*.csv
+data/*.parquet
+data/*.zip
+data/*.json
+
+# =========================
+# MLflow
+# =========================
+mlruns/
+mlflow.db
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.*
+
+# =========================
+# Docker (optional ignore)
+# =========================
+*.tar
