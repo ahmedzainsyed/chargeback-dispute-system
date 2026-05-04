@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB:       chargebacks
+      POSTGRES_USER:     razorpay
+      POSTGRES_PASSWORD: razorpay
+    ports: ["5432:5432"]
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ../src/data/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U razorpay"]
+      interval: 10s; retries: 5
+
+  redis:
+    image: redis:7.2-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+
+  chargeback-api:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    ports: ["8002:8002"]
+    environment:
+      - DATABASE_URL=postgresql://razorpay:razorpay@postgres:5432/chargebacks
+      - REDIS_HOST=redis
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 15s
+
+  prometheus:
+    image: prom/prometheus:v2.50.1
+    ports: ["9092:9090"]
+
+  grafana:
+    image: grafana/grafana:10.3.3
+    ports: ["3002:3000"]
+
+volumes:
+  pg_data:
